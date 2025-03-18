@@ -3,13 +3,13 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import View from "./components/View";
+import Edit from "./components/Edit";
 
 function App() {
   const [data, setData] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
 
   async function fetchData() {
-    console.log(import.meta.env.VITE_API_URL);
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/games`);
       if (!response.ok) {
@@ -23,17 +23,25 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   function handleEdit(id) {
     console.log("Editing gameID " + id);
     const item = data.find((d) => d.id === id);
     setEditingItem(item);
   }
 
-  async function handleSave(editItem) {
-    console.log(import.meta.env.VITE_API_URL);
+  function handleEditCancel() {
+    setEditingItem(null);
+  }
+
+  async function handleEditSave(editItem) {
+    console.log(JSON.stringify(editItem));
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/games/${editItem.id}`,
+        `${import.meta.env.VITE_API_URL}/games/${editItem.id}`, // Removed trailing slash
         {
           method: "PUT",
           headers: {
@@ -44,7 +52,8 @@ function App() {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to update the game");
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to update the game");
       }
 
       const result = await response.json();
@@ -59,13 +68,63 @@ function App() {
     }
   }
 
-  function handleDelete(id) {
-    console.log("Deleting gameID " + id);
+  async function handleDelete(id) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/games/${id}`, // Ensure this URL is correct
+        {
+          method: "DELETE",
+        }
+      );
+  
+      if (!response.ok) {
+        const errorText = await response.text(); // Read response as plain text
+        let errorMessage = "Failed to delete the game";
+  
+        try {
+          const errorData = JSON.parse(errorText); // Try parsing JSON
+          errorMessage = errorData.detail || errorMessage;
+        } catch (e) {
+          console.error("Error parsing response:", e);
+        }
+  
+        throw new Error(errorMessage);
+      }
+  
+      console.log(`Deleted game with id: ${id}`);
+  
+      setData((prevData) => prevData.filter((d) => d.id !== id));
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
   }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  async function handleAddGame(newGame) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/games/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newGame),  // Send the new game data
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to add the game");
+      }
+  
+      const result = await response.json();
+      console.log("Added game:", result);
+  
+      // Add the new game to the state
+      setData((prevData) => [...prevData, result]);
+    } catch (error) {
+      console.error("Error adding game:", error);
+    }
+  }
 
   return (
     <>
@@ -78,7 +137,15 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <View data={data} onEdit={handleEdit} onDelete={handleDelete} />
+      {editingItem ? (
+        <Edit
+          item={editingItem}
+          onSave={handleEditSave}
+          onCancel={handleEditCancel}
+        />
+      ) : (
+        <View data={data} onEdit={handleEdit} onDelete={handleDelete} />
+      )}
     </>
   );
 }
