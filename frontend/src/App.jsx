@@ -41,7 +41,7 @@ function App() {
     console.log(JSON.stringify(editItem));
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/games/${editItem.id}`, // Removed trailing slash
+        `${import.meta.env.VITE_API_URL}/games/${editItem.id}/edit`, // Removed trailing slash
         {
           method: "PUT",
           headers: {
@@ -71,7 +71,7 @@ function App() {
   async function handleDelete(id) {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/games/${id}`, // Ensure this URL is correct
+        `${import.meta.env.VITE_API_URL}/games/${id}/delete`, // Ensure this URL is correct
         {
           method: "DELETE",
         }
