@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import View from "./components/View";
 import Edit from "./components/Edit";
+import ProfileUpdateForm from "./components/ProfileUpdateForm";
 
 function App() {
   const [data, setData] = useState([]);
@@ -30,6 +31,7 @@ function App() {
   function handleEdit(id) {
     console.log("Editing gameID " + id);
     const item = data.find((d) => d.id === id);
+    console.log(item);
     setEditingItem(item);
   }
 
@@ -76,23 +78,23 @@ function App() {
           method: "DELETE",
         }
       );
-  
+
       if (!response.ok) {
         const errorText = await response.text(); // Read response as plain text
         let errorMessage = "Failed to delete the game";
-  
+
         try {
           const errorData = JSON.parse(errorText); // Try parsing JSON
           errorMessage = errorData.detail || errorMessage;
         } catch (e) {
           console.error("Error parsing response:", e);
         }
-  
+
         throw new Error(errorMessage);
       }
-  
+
       console.log(`Deleted game with id: ${id}`);
-  
+
       setData((prevData) => prevData.filter((d) => d.id !== id));
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -108,17 +110,17 @@ function App() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newGame),  // Send the new game data
+          body: JSON.stringify(newGame), // Send the new game data
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to add the game");
       }
-  
+
       const result = await response.json();
       console.log("Added game:", result);
-  
+
       // Add the new game to the state
       setData((prevData) => [...prevData, result]);
     } catch (error) {
@@ -137,6 +139,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <ProfileUpdateForm />
       {editingItem ? (
         <Edit
           item={editingItem}

@@ -19,11 +19,11 @@ function Edit({ item, onSave, onCancel }) {
         onChange={handleChange}
       />
 
-      <label>Genre:</label>
+      <label>Release Date:</label>
       <input
         type="text"
-        name="genre"
-        value={editedItem.genre}
+        name="release_date"
+        value={editedItem.release_date}
         onChange={handleChange}
       />
 

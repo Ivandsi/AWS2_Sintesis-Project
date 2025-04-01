@@ -49,15 +49,6 @@ class Achievement(models.Model):
 
     def __str__(self):
         return self.title
-    
-class ListInfo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    description = models.TextField(null=True, blank=True)
-    is_public = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
 
 class Game(models.Model):
     title = models.CharField(max_length=255)
@@ -77,20 +68,21 @@ class Game(models.Model):
     esrb_rating = models.CharField(max_length=5, null=True, blank=True)  # Example: 'E', 'T', 'M'
 
     tags = models.ManyToManyField(Tag)
-    lists = models.ManyToManyField(ListInfo, through='GameList')  # Intermediate table for many-to-many relation
-    friends_played = models.ManyToManyField(User, related_name='games_played', blank=True)
     achievements = models.ManyToManyField(Achievement, blank=True)
 
     def __str__(self):
         return self.title
     
 class GameList(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    list = models.ForeignKey(ListInfo, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default=1) 
+    name = models.CharField(max_length=255, default='Unnamed List')
+    description = models.TextField(null=True, blank=True)
+    is_public = models.BooleanField(default=False)
+    games = models.ManyToManyField(Game)
     added_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.game.title} in {self.list.name}"
+        return self.name
     
 class JournalEntry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

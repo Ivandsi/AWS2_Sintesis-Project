@@ -27,7 +27,7 @@ function View({ data, onEdit, onDelete }) {
             <thead>
               <tr>
                 <th>Title</th>
-                <th>Genre</th>
+                <th>Release Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -35,7 +35,7 @@ function View({ data, onEdit, onDelete }) {
               {data.map((item) => (
                 <tr key={item.id}>
                   <td>{item.title}</td>
-                  <td>{item.genre}</td>
+                  <td>{item.release_date}</td>
                   <td>
                     <button
                       className="edit-btn"
