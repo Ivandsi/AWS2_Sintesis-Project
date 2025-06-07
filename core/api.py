@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from ninja import NinjaAPI, Schema, File
 from ninja.security import HttpBasicAuth, HttpBearer
 from ninja.files import UploadedFile
+from ninja.errors import HttpError
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from datetime import date, datetime
@@ -17,14 +18,26 @@ api = NinjaAPI()
 # Autenticació bàsica
 class BasicAuth(HttpBasicAuth):
     def authenticate(self, request, username, password):
-        user = authenticate(username=username, password=password)
-        if user:
-            # Genera un token simple
-            token = secrets.token_hex(16)
-            user.auth_token = token
-            user.save()
-            return token
-        return None
+        try:
+            # Busca al usuario por email
+            user = User.objects.get(email=username)
+            # Verifica la contraseña
+            if user.check_password(password):
+                # Generate a token
+                token = secrets.token_hex(16)
+                
+                # Get or create the UserProfile for this user
+                profile, created = UserProfile.objects.get_or_create(user=user)
+                
+                # Assign the token to the profile
+                profile.auth_token = token
+                profile.save()
+                return token
+            return user
+        except User.DoesNotExist:
+            return None
+        except Exception as e:
+            raise HttpError(500, "Ha ocurrido un error al autenticar el usuario.")
 
 # Autenticació per Token Bearer
 class AuthBearer(HttpBearer):
@@ -108,6 +121,12 @@ def delete_game(request, game_id: int):
         return {"detail": "Game not found"}
     game.delete()
     return {"detail": "Game deleted successfully"}
+
+# Endpoint to get user info based on token
+@api.get("/users/me", response=UserOut, auth=AuthBearer())
+def get_logged_in_user(request):
+    user = request.auth.user  # request.auth is the UserProfile; .user gives the User object
+    return user
 
 # Endpoint to get user info
 @api.get("/users/{user_id}", response=UserOut)

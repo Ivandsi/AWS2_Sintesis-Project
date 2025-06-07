@@ -1,0 +1,24 @@
+.homepage-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.homepage-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary, #111); /* Use your theme variables or fallback */
+}
+
+.homepage-description {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: var(--text-secondary, #333);
+}
+
+.homepage-note {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--text-muted, #555);
+}

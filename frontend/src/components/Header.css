@@ -1,0 +1,158 @@
+
+/* Always dark style applied directly */
+.header {
+  position: relative;
+  width: 100%;
+  background-color: #141414;
+  border-bottom: 1px solid #3c3c50;
+  z-index: 50;
+  color: white;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1.25rem 1.25rem;
+  position: relative;
+}
+
+.logo {
+  display: block;
+}
+
+.user-controls {
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.greeting {
+  color: white;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.dark-mode-switch {
+  cursor: pointer;
+  font-weight: 500;
+  color: #e5e7eb; /* light gray */
+  border-radius: 9999px; /* fully rounded */
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  background-color: transparent;
+  border: none;
+  transition: background-color 0.2s ease;
+  outline: none;
+}
+
+.dark-mode-switch:hover {
+  background-color: #374151; /* darker gray */
+}
+
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem; /* 36px */
+  height: 2.25rem;
+}
+
+.icon {
+  width: 1rem; /* 16px */
+  height: 1rem;
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  user-select: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Default button */
+.btn-default {
+  background-color: #2563eb; /* blue-600 */
+  color: white;
+  border: none;
+}
+
+.btn-default:hover:not(:disabled),
+.btn-default:focus:not(:disabled) {
+  background-color: #1e40af; /* blue-700 */
+  outline: none;
+}
+
+/* Outline button */
+.btn-outline {
+  background-color: #282828;
+  color: white;
+  border: 1px solid #3c3c3c;
+  box-shadow: none;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: #3c3c3c;
+}
+
+.btn-outline:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Spinner container */
+.spinner-wrapper {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Spinner */
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #3b82f6; /* blue-500 */
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive for medium screens */
+@media (min-width: 768px) {
+  .header {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+  }
+}
