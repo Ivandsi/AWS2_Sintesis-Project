@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from games.models import (
+from core.models import (
     Developer, Publisher, Platform, Genre, Tag, Franchise,
     Achievement, ListInfo, Game, GameList
 )
