@@ -136,7 +136,7 @@ export async function getUserInfo(token) {
     return data;
   } catch (err) {
     console.error("Error fetching user info:", err.message);
-    throw err;
+    return null; // Return null if there's an error
   }
 }
 

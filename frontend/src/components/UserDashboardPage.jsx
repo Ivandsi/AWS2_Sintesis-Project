@@ -28,6 +28,11 @@ export default function UserDashboardPage() {
     const fetchDashboardData = async () => {
       try {
         const userInfoFromAPI = await getUserInfo(userToken);
+        // Si no se obtiene información del usuario desde la API, usar el usuario actual
+        if (!userInfoFromAPI) {
+          window.location.reload(); // Recargar la página para obtener el usuario actualizado
+          return;
+        }
         setDashboardUser(userInfoFromAPI || user);
 
         const statsData = await getUserDashboardStats(userToken);
