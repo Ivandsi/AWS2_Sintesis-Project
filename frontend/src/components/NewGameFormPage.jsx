@@ -39,7 +39,7 @@ const NewGameFormPage = () => {
       if (!user) {
         setLoading(false); // Stop loading
       }
-    }, 3000); // 3-second timeout
+    }, 5000); // 5-second timeout
 
     return () => clearTimeout(timeout); // Cleanup timeout on unmount
   }, [user]);
