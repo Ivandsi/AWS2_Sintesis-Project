@@ -1,16 +1,15 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
+import React, { useContext, useState, useRef, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext"; // Import useToast
-import { updateProfile } from "../services/api";
+import { getUserInfo, updateProfile } from "../services/api";
 import "./ProfilePage.css";
-
 
 // You can import your custom Input component if you want to use it for all fields
 // import Input from "./Input";
 
 export default function ProfilePage() {
-  const { user, userToken } = useContext(AuthContext);
+  const { user, userToken, setUser, logout } = useContext(AuthContext);
   const { addToast } = useToast(); // Use the ToastContext
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
@@ -50,9 +49,29 @@ export default function ProfilePage() {
     );
   }
 
-  if (!userToken) {
-    navigate("/");
-  }
+  const fetchUserInfo = async () => {
+    if (userToken) {
+      const res = await getUserInfo(userToken); // getUserInfo will return null if there's an error
+      if (!res) {
+        logout(); // Assuming logout is a function that clears user context
+        navigate("/"); // Redirect to home if user info is not valid
+      } else {
+        // If user info is valid, set the user context
+        // This is already handled by the AuthContext provider
+        console.log("User info fetched successfully:", res);
+        setUser(res); // Update user context with fetched data
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!userToken) {
+      navigate("/");
+      return;
+    }
+
+    fetchUserInfo();
+  }, [userToken]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -100,6 +119,7 @@ export default function ProfilePage() {
         userToken
       );
       setEditing(false);
+      fetchUserInfo(); // Refresh user info after saving
       addToast("success", "Perfil actualizado correctamente."); // Success toast
     } catch (err) {
       addToast("error", "No se pudieron guardar los cambios."); // Error toast

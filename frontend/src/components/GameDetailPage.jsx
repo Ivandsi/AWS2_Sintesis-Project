@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom"; // Para obtener el ID del juego de la URL
+import { useNavigate, useParams } from "react-router-dom"; // Para obtener el ID del juego de la URL
 import {
   addGameToList,
   createReview,
   getGameDetails,
   getGameUserReview,
+  getUserInfo,
   getUserLists,
   updateReview,
 } from "../services/api"; // Tu función para obtener detalles del juego
@@ -17,7 +18,7 @@ import "./GameDetailPage.css"; // Archivo CSS para estilizar esta página
 
 export default function GameDetailPage() {
   const { gameId } = useParams(); // Obtener gameId de la URL (ej: /game/123)
-  const { userToken } = useContext(AuthContext); // Si el endpoint de detalles requiere token
+  const { userToken, logout } = useContext(AuthContext); // Si el endpoint de detalles requiere token
   const { addToast } = useToast(); // Use the ToastContext
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function GameDetailPage() {
   const [userReview, setUserReview] = useState(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewsRefreshKey, setReviewsRefreshKey] = useState(0);
+  const navigate = useNavigate();
 
   const LIST_NAMES = [
     "Jugando",
@@ -108,6 +110,21 @@ export default function GameDetailPage() {
       addToast("error", err.message || "No se pudo guardar la reseña."); // Error toast
     }
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (userToken) {
+        const res = await getUserInfo(userToken); // getUserInfo will return null if there's an error
+        console.log("User info fetched in GameDetail:", res);
+        if (!res) {
+          logout();
+          console.log("Dumbv");
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, [userToken]);
 
   useEffect(() => {
     const fetchGame = async () => {

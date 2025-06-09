@@ -8,7 +8,7 @@ import "./UserListPage.css";
 
 export default function UserListPage() {
   const { listType } = useParams();
-  const { userToken } = useContext(AuthContext);
+  const { userToken, logout } = useContext(AuthContext);
   const { addToast } = useToast();
   const [games, setGames] = useState([]);
   const [listId, setListId] = useState(null);
@@ -17,7 +17,8 @@ export default function UserListPage() {
 
   useEffect(() => {
     if (!userToken) {
-      navigate("/login");
+      logout();
+      navigate("/");
     }
     setLoading(true);
     getUserList(userToken, listType)

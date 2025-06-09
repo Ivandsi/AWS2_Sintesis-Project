@@ -10,7 +10,7 @@ import {
 import "./UserDashboardPage.css"; // Asegúrate de que tu CSS esté enlazado
 
 export default function UserDashboardPage() {
-  const { user, userToken } = useContext(AuthContext);
+  const { user, userToken, logout } = useContext(AuthContext);
   const [userStats, setUserStats] = useState(null);
   const [trendingGames, setTrendingGames] = useState([]);
   const [popularReviews, setPopularReviews] = useState([]);
@@ -28,10 +28,10 @@ export default function UserDashboardPage() {
     const fetchDashboardData = async () => {
       try {
         const userInfoFromAPI = await getUserInfo(userToken);
-        // Si no se obtiene información del usuario desde la API, usar el usuario actual
         if (!userInfoFromAPI) {
-          window.location.reload(); // Recargar la página para obtener el usuario actualizado
-          return;
+          console.log("User info response in ashboard:", userInfoFromAPI);
+          logout();
+          window.location.reload(); // Forzar recarga si no hay datos de usuario
         }
         setDashboardUser(userInfoFromAPI || user);
 

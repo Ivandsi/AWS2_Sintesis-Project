@@ -106,7 +106,23 @@ const NewGameFormPage = () => {
     return <div className="loading-message">Cargando...</div>;
   }
 
-  if (!user || (!user.isSuperuser || !user.groups.includes("Administrador"))) {
+  console.log("User exists:", !!user);
+  console.log("Is superuser:", user?.is_superuser);
+  console.log("Groups exist:", !!user?.groups);
+  console.log(
+    "Groups include 'Administrador':",
+    user?.groups?.includes("Administrador")
+  );
+
+  if (
+    !user ||
+    !user.is_superuser ||
+    !user.groups ||
+    !user.groups.includes("Administrador")
+  ) {
+    console.log("User info:", user);
+    console.log("User token:", userToken);
+    console.log("Access denied due to insufficient permissions.");
     return (
       <div className="no-permission-message">
         <h2>Acceso denegado</h2>

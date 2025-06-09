@@ -8,6 +8,7 @@ export const AuthContext = createContext({
   logout: () => {}, // Función para cerrar sesión
   setActiveComponent: () => {}, // Función para cambiar el componente activo
   setUserToken: () => {}, // set token de usuario
+  setUser: () => {}, // set información del usuario
   userToken: null, // token de usuario
 });
 
@@ -65,6 +66,7 @@ export const AuthProvider = ({ children }) => {
         setActiveComponent,
         userToken,
         setUserToken,
+        setUser,
       }}
     >
       {children}

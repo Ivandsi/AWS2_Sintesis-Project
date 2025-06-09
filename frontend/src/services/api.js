@@ -129,6 +129,13 @@ export async function getUserInfo(token) {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        // Token is invalid or expired
+        localStorage.removeItem("token"); // Remove the old token
+        throw new Error(
+          "Token has expired or is invalid. Please log in again."
+        );
+      }
       throw new Error("Failed to fetch user info");
     }
 
