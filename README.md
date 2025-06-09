@@ -19,6 +19,20 @@ sudo apt update
 sudo apt install python3-venv git
 ```
 
+Clona el repositorio y accede al directorio del proyecto:
+
+```bash
+git clone https://github.com/Ivandsi/AWS2_Sintesis-Project
+cd AWS2_Sintesis-Project
+```
+
+Crea un entorno virtual y actívalo:
+
+```bash
+python3 -m venv env
+source env/bin/activate
+```
+
 Instala las bibliotecas necesarias para trabajar con MySQL y otros requisitos del sistema:
 
 ```bash
@@ -28,21 +42,24 @@ sudo apt install libmysqlclient-dev python3-dev python3-mysqldb gcc pkgconf
 Instala las dependencias del proyecto especificadas en env_requirements.txt:
 
 ```bash
-(env) $ pip install -r env_requirements.txt
+# Estar dentro del enterno virtual es necesario para esto:
+pip install -r env_requirements.txt
 ```
 
 Configurar la base de datos y añadido un superusuario:
 
 ```bash
-(env) $ cp .env.example .env
-(env) $ ./manage.py migrate
-(env) $ ./manage.py createsuperuser
+# Estar dentro del enterno virtual es necesario para esto:
+cp .env.example .env
+./manage.py migrate
+./manage.py createsuperuser
 ```
 
 Para pruebas en local, puedes poner en marxa el servidor de desarrollo de esta manera:
 
 ```bash
-(env) $ ./manage.py runserver
+# Estar dentro del enterno virtual es necesario para esto:
+./manage.py runserver
 ```
 
 Si hacemos eso último podemos acceder al panel de administración en: http://localhost:8000/admin/
