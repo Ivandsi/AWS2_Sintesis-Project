@@ -9,14 +9,16 @@ import {
   updateReview,
 } from "../services/api"; // Tu función para obtener detalles del juego
 import { AuthContext } from "../contexts/AuthContext"; // Si necesitas el token para el API
-import "./GameDetailPage.css"; // Archivo CSS para estilizar esta página
+import { useToast } from "../contexts/ToastContext"; // Import useToast
 import GameReviewsSection from "./GameReviewsSection"; // Componente para mostrar las reseñas del juego
 import AddToListModal from "./AddToListModal";
 import ReviewModal from "./ReviewModal";
+import "./GameDetailPage.css"; // Archivo CSS para estilizar esta página
 
 export default function GameDetailPage() {
   const { gameId } = useParams(); // Obtener gameId de la URL (ej: /game/123)
   const { userToken } = useContext(AuthContext); // Si el endpoint de detalles requiere token
+  const { addToast } = useToast(); // Use the ToastContext
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -50,13 +52,26 @@ export default function GameDetailPage() {
     }
   };
 
+  const fetchUserReview = async () => {
+    if (!userToken || !gameId) return;
+    try {
+      const review = await getGameUserReview(gameId, userToken);
+      setUserReview(review && review.id ? review : null);
+    } catch (err) {
+      setUserReview(null);
+    }
+  };
+
   const handleAddToList = async () => {
     try {
       await addGameToList(selectedList, game.id, userToken);
-      alert("Juego añadido a la lista correctamente.");
+      addToast("success", "Juego añadido a la lista correctamente."); // Success toast
       await fetchCurrentList(); // Ensure backend is updated before fetching
     } catch (err) {
-      alert(err.message || "No se pudo añadir el juego a la lista.");
+      addToast(
+        "error",
+        err.message || "No se pudo añadir el juego a la lista."
+      ); // Error toast
     } finally {
       setShowListModal(false);
       // Do NOT reset selectedList here
@@ -66,7 +81,7 @@ export default function GameDetailPage() {
   // Reset selection to the original list before closing
   const handleCancelAddToList = () => {
     setSelectedList(currentListName || "");
-    setShowListModal(false)
+    setShowListModal(false);
   };
 
   // When opening the modal, always set selectedList to currentListName
@@ -79,15 +94,18 @@ export default function GameDetailPage() {
     try {
       if (userReview) {
         await updateReview(game.id, reviewData, userToken);
-        alert("Reseña actualizada.");
+        addToast("success", "Reseña actualizada."); // Success toast
       } else {
         await createReview(game.id, reviewData, userToken);
-        alert("Reseña creada.");
+        addToast("success", "Reseña creada."); // Success toast
       }
+      // Refresh the user's review after submission
+      await fetchUserReview();
+
       setShowReviewModal(false);
       setReviewsRefreshKey((k) => k + 1); // <--- Add this line
     } catch (err) {
-      alert(err.message || "No se pudo guardar la reseña.");
+      addToast("error", err.message || "No se pudo guardar la reseña."); // Error toast
     }
   };
 
@@ -99,19 +117,11 @@ export default function GameDetailPage() {
         setGame(data);
       } catch (err) {
         setError(err.message);
+        addToast("error", "Error al obtener los detalles del juego.");
+        // Log the error for debugging
         console.error("Error al obtener detalles del juego:", err);
       } finally {
         setLoading(false);
-      }
-    };
-
-    const fetchUserReview = async () => {
-      if (!userToken || !gameId) return;
-      try {
-        const review = await getGameUserReview(gameId, userToken);
-        setUserReview(review && review.id ? review : null);
-      } catch (err) {
-        setUserReview(null);
       }
     };
 
@@ -214,8 +224,11 @@ export default function GameDetailPage() {
             </div>
             {userToken && (
               <>
-                <button className="btn-add-to-lists" onClick={openListModal}>
-                  {currentListName ? "Editar lista" : "Añadir a lista"}
+                <button
+                  className="btn-add-to-lists"
+                  onClick={() => setShowReviewModal(true)}
+                >
+                  {userReview ? "Editar reseña" : "Hacer reseña"}
                 </button>
                 <button
                   className="btn-add-to-lists"

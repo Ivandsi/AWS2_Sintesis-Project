@@ -53,7 +53,7 @@ export default function HomePage() {
           <h2>Juegos añadidos recientemente</h2>
           <button
             className="home-see-all-btn"
-            onClick={() => navigate("/search")}
+            onClick={() => navigate("/games")}
           >
             Ver todos los juegos
           </button>

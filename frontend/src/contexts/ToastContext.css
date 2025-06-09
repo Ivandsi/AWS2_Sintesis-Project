@@ -1,0 +1,12 @@
+/* Center the toast container on the screen */
+.toast-container {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust for centering */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* Space between toasts */
+  z-index: 1000; /* Ensure it appears above other elements */
+}

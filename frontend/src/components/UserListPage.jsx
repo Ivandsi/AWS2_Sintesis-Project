@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
 import { getUserList, removeGameFromList } from "../services/api";
 import { LIST_TYPE_NAMES } from "../services/constants";
 import "./UserListPage.css";
@@ -8,6 +9,7 @@ import "./UserListPage.css";
 export default function UserListPage() {
   const { listType } = useParams();
   const { userToken } = useContext(AuthContext);
+  const { addToast } = useToast();
   const [games, setGames] = useState([]);
   const [listId, setListId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,6 +31,8 @@ export default function UserListPage() {
   const handleRemove = async (gameId) => {
     if (!listId) return;
     await removeGameFromList(userToken, listId, gameId);
+    // Add a toast notification here if needed
+    addToast("success", "Juego eliminado de la lista correctamente.");
     const updated = games.filter((g) => g.id !== gameId);
     setGames(updated);
     if (updated.length === 0) {

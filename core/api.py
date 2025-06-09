@@ -98,6 +98,8 @@ class UserOut(Schema):
     id: int
     username: str
     email: str
+    is_superuser: bool
+    groups: List[str]
     profile: Optional[UserProfileOut] = None
 
 class UserProfileIn(Schema):
@@ -130,6 +132,8 @@ def get_logged_in_user(request):
         "id": user.id,
         "username": user.username,
         "email": user.email,
+        "is_superuser": user.is_superuser,
+        "groups": list(user.groups.values_list("name", flat=True)),
         "profile": profile_data,
     }
 
@@ -550,6 +554,80 @@ def search_games(request, q: str = "", page: int = 1, per_page: int = 20):
         "total_games": total_games,
         "per_page": per_page,
     }
+    
+class GameCreatePayload(Schema):
+    title: str
+    release_date: Optional[date] = None
+    developer: Optional[int] = None
+    publisher: Optional[int] = None
+    platforms: List[int]
+    genres: List[int]
+    tags: List[int]
+    franchise: Optional[int] = None
+    description: Optional[str] = None
+    multiplayer_support: Optional[bool] = False
+
+@api.post("/games/add", auth=AuthBearer())
+def add_game(
+    request,
+    payload: GameCreatePayload = Form(...),
+    cover_image: Optional[UploadedFile] = File(None)
+):
+    # Validate and process the payload
+    errors = {}
+    if not payload.title:
+        errors["title"] = "El título es obligatorio."
+
+    if errors:
+        return api.create_response(request, {"formErrors": errors}, status=400)
+
+    # Create the game object
+    game = Game.objects.create(
+        title=payload.title,
+        release_date=payload.release_date,
+        developer_id=payload.developer,
+        publisher_id=payload.publisher,
+        franchise_id=payload.franchise,
+        description=payload.description,
+        multiplayer_support=payload.multiplayer_support,
+    )
+
+    # Add platforms, genres, and tags directly as lists
+    if payload.platforms:
+        game.platforms.set(payload.platforms)
+    if payload.genres:
+        game.genres.set(payload.genres)
+    if payload.tags:
+        game.tags.set(payload.tags)
+
+    # Handle the cover image upload
+    if cover_image:
+        allowed_types = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
+        if cover_image.content_type not in allowed_types:
+            errors["cover_image"] = "Formato de imagen inválido. Solo JPG, JPEG, PNG y WEBP."
+        else:
+            game.cover_image.save(cover_image.name, cover_image.file, save=True)
+
+    if errors:
+        return api.create_response(request, {"formErrors": errors}, status=400)
+
+    # Save the game object
+    game.save()
+
+    return {
+        "id": game.id,
+        "title": game.title,
+        "release_date": game.release_date,
+        "developer": game.developer.name if game.developer else None,
+        "publisher": game.publisher.name if game.publisher else None,
+        "platforms": list(game.platforms.values_list("name", flat=True)),
+        "genres": list(game.genres.values_list("name", flat=True)),
+        "tags": list(game.tags.values_list("name", flat=True)),
+        "franchise": game.franchise.name if game.franchise else None,
+        "description": game.description,
+        "multiplayer_support": game.multiplayer_support,
+        "cover_image_url": request.build_absolute_uri(game.cover_image.url) if game.cover_image else None,
+    }
 
 @api.get("/games", response=List[GamesOut], summary="Obtener todos los juegos")
 def games(request):
@@ -578,7 +656,7 @@ def game(request, game_id: int):
 @api.get("/games/{game_id}/reviews", summary="Obtener reseñas de un juego específico")
 def game_reviews(request, game_id: int, page: int = 1, per_page: int = 4):
     game = get_object_or_404(Game, id=game_id)
-    reviews_qs = Review.objects.filter(game=game).select_related('user').order_by('-created_at')
+    reviews_qs = Review.objects.filter(game=game).select_related('user').order_by('-updated_at')
     total_reviews = reviews_qs.count()
     total_pages = (total_reviews + per_page - 1) // per_page
 
@@ -649,11 +727,6 @@ def user_game_review(request, game_id: int):
     review.user_username = user.username
     return review
 
-@api.post("/games/add", response=GamesOut)
-def add_game(request, payload: GamesIn):
-    game = Game.objects.create(**payload.dict())
-    return game
-
 @api.put("/games/{game_id}/edit", response=GamesOut)
 def update_game(request, game_id: int, payload: GamesIn):
     game = get_object_or_404(Game, id=game_id)
@@ -685,3 +758,39 @@ def get_popular_reviews(request):
         else:
             review.game.cover_image_url = None
     return popular_reviews
+
+# Endpoint to fetch all developers
+@api.get("/developers", response=List[DeveloperSchema], summary="Obtener todos los desarrolladores")
+def get_developers(request):
+    developers = Developer.objects.all()
+    return developers
+
+# Endpoint to fetch all publishers
+@api.get("/publishers", response=List[PublisherSchema], summary="Obtener todas las distribuidoras")
+def get_publishers(request):
+    publishers = Publisher.objects.all()
+    return publishers
+
+# Endpoint to fetch all platforms
+@api.get("/platforms", response=List[PlatformSchema], summary="Obtener todas las plataformas")
+def get_platforms(request):
+    platforms = Platform.objects.all()
+    return platforms
+
+# Endpoint to fetch all genres
+@api.get("/genres", response=List[GenreSchema], summary="Obtener todos los géneros")
+def get_genres(request):
+    genres = Genre.objects.all()
+    return genres
+
+# Endpoint to fetch all tags
+@api.get("/tags", response=List[TagSchema], summary="Obtener todas las etiquetas")
+def get_tags(request):
+    tags = Tag.objects.all()
+    return tags
+
+# Endpoint to fetch all franchises
+@api.get("/franchises", response=List[FranchiseSchema], summary="Obtener todas las franquicias")
+def get_franchises(request):
+    franchises = Franchise.objects.all()
+    return franchises

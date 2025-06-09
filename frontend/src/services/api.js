@@ -77,15 +77,16 @@ export async function register(formData, navigate) {
 
     const data = await response.json();
 
-    if (response.ok) {
-      alert("¡Registro exitoso!");
-      navigate("/login");
-    } else {
-      alert(data.message || "Error al registrar.");
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Registration failed:", errorData);
+      return { success: false };
     }
-  } catch (error) {
+
+    return { success: true };
+  } catch (err) {
     console.error("Error al registrar:", error);
-    alert("Hubo un error al conectar con el servidor.");
+    return { success: false };
   }
 }
 
@@ -387,6 +388,82 @@ export async function getGameDetails(gameId, token = null) {
 }
 
 /**
+ /**
+ * Crea un nuevo videojuego.
+ * @param {object} data - Los datos del formulario para crear el videojuego.
+ * @param {string} token - El token de autenticación del usuario.
+ * @returns {Promise<object>} Los detalles del videojuego creado.
+ */
+export async function createGame(data, token) {
+  try {
+    const formData = new FormData();
+
+    // Append all fields from the FormData object
+    if (data.get("title")) formData.append("title", data.get("title"));
+    if (data.get("releaseDate"))
+      formData.append("release_date", data.get("releaseDate"));
+    if (data.get("developer"))
+      formData.append("developer", data.get("developer"));
+    if (data.get("publisher"))
+      formData.append("publisher", data.get("publisher"));
+
+    // Append platforms, genres, and tags as individual fields
+    const platforms = data.getAll("platforms");
+    if (platforms.length > 0) {
+      platforms.forEach((platform) => formData.append("platforms", platform)); // Append each value
+    }
+
+    const genres = data.getAll("genres");
+    if (genres.length > 0) {
+      genres.forEach((genre) => formData.append("genres", genre)); // Append each value
+    }
+
+    const tags = data.getAll("tags");
+    if (tags.length > 0) {
+      tags.forEach((tag) => formData.append("tags", tag)); // Append each value
+    }
+
+    if (data.get("franchise"))
+      formData.append("franchise", data.get("franchise"));
+    if (data.get("description"))
+      formData.append("description", data.get("description"));
+    if (data.get("multiplayerSupport") !== undefined) {
+      formData.append("multiplayer_support", data.get("multiplayerSupport"));
+    }
+    if (data.get("coverImage"))
+      formData.append("cover_image", data.get("coverImage"));
+
+    const headers = {
+      Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+    };
+
+    console.log("FormData entries:", [...formData.entries()]); // Log the FormData for debugging
+
+    const response = await fetch(`${API_URL}games/add`, {
+      method: "POST",
+      headers: headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error details:", errorData); // Log the full error response
+      throw new Error(
+        errorData.detail ||
+          JSON.stringify(errorData) ||
+          "Error al crear el videojuego."
+      );
+    }
+
+    const result = await response.json();
+    return result; // Return the created game data
+  } catch (err) {
+    console.error("Error al crear el videojuego:", err.message);
+    throw err; // Rethrow the error for further handling
+  }
+}
+
+/**
  * Obtiene las reseñas de un juego por su ID.
  * @param {number} gameId - El ID del juego.
  * @returns {Promise<Array<object>>} Una lista de reseñas del juego.
@@ -523,3 +600,30 @@ export async function removeGameFromList(token, listId, gameId) {
   );
   if (!res.ok) throw new Error("No se pudo eliminar el juego");
 }
+
+export const fetchOptions = async () => {
+  try {
+    const response = await Promise.all([
+      fetch(`${API_URL}developers`),
+      fetch(`${API_URL}publishers`),
+      fetch(`${API_URL}platforms`),
+      fetch(`${API_URL}genres`),
+      fetch(`${API_URL}tags`),
+      fetch(`${API_URL}franchises`),
+    ]);
+    const [developers, publishers, platforms, genres, tags, franchises] =
+      await Promise.all(response.map((res) => res.json()));
+    return {
+      developers,
+      publishers,
+      platforms,
+      genres,
+      tags,
+      franchises,
+    };
+  } catch (err) {
+    throw new Error(
+      "Error al cargar las opciones. Por favor, inténtalo de nuevo."
+    );
+  }
+};

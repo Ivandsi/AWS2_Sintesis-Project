@@ -1,0 +1,239 @@
+.new-game-form-page {
+  min-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #232733;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  color: #e0e6ee;
+}
+
+.new-game-form-page h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.new-game-form-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.new-game-form-page label {
+  font-size: 1rem;
+  font-weight: bold; /* Make labels bold */
+  margin-bottom: 0.5rem;
+}
+
+.new-game-form-page input,
+.new-game-form-page textarea,
+.new-game-form-page select {
+  padding: 1rem; /* Increase padding for larger inputs */
+  border: 1px solid #444;
+  border-radius: 5px;
+  background: #181b20;
+  color: #e0e6ee;
+  font-size: 1.2rem; /* Increase font size for better readability */
+  width: 100%; /* Ensure inputs take up the full width */
+}
+
+.new-game-form-page input:focus,
+.new-game-form-page textarea:focus,
+.new-game-form-page select:focus {
+  outline: none;
+  border-color: #00bcd4;
+}
+
+.new-game-form-page textarea {
+  resize: vertical;
+  min-height: 150px; /* Increase height for better usability */
+}
+
+.new-game-form-page button[type="submit"] {
+  padding: 1rem 1.5rem; /* Increase button size */
+  background-color: #00bcd4;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.new-game-form-page button[type="submit"]:hover {
+  background-color: #008ba3;
+}
+
+/* Checkbox input stays inline with the label */
+.new-game-form-page .checkbox-container {
+  display: flex;
+  align-items: center; /* Align label and checkbox vertically */
+  gap: 0.5rem; /* Add spacing between the label and checkbox */
+}
+
+.new-game-form-page .checkbox-container label {
+  font-weight: bold; /* Make the label bold */
+  color: #e0e6ee; /* Ensure text is visible */
+  margin: 0; /* Remove any default margin to fix alignment */
+}
+
+.new-game-form-page .checkbox-container input[type="checkbox"] {
+  width: 1.2rem; /* Slightly larger checkbox */
+  height: 1.2rem;
+  accent-color: #00bcd4; /* Unique color for the checkbox */
+  border: 1px solid #444; /* Add border for consistency */
+  border-radius: 3px; /* Rounded corners */
+}
+
+/* React-Select styles with classNamePrefix */
+div.new-game-form-page .custom-select__control {
+  background-color: #181b20;
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #e0e6ee;
+  display: flex; /* Ensure content stays aligned */
+  align-items: center; /* Center content vertically */
+  white-space: nowrap; /* Prevent wrapping of tags */
+}
+
+div.new-game-form-page .custom-select__control--is-focused {
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 1px #00bcd4;
+}
+
+/* Dropdown menu styles */
+div.new-game-form-page .custom-select__menu {
+  background-color: #181b20; /* Dark background for dropdown */
+  color: #e0e6ee; /* Light text color */
+  border: 1px solid #444;
+  max-height: 10rem; /* Limit the dropdown height */
+  overflow-y: auto; /* Enable scrolling for overflow */
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+/* Style for selected options in the dropdown */
+div.new-game-form-page .custom-select__option--is-selected {
+  background-color: #232733; /* Dark background for selected option */
+  color: #e0e6ee; /* Light text color */
+}
+
+/* Style for the single selected value in the input field */
+div.new-game-form-page .custom-select__single-value {
+  color: #e0e6ee; /* Ensure text is visible */
+}
+
+/* Style for focused options in the dropdown */
+div.new-game-form-page .custom-select__option--is-focused {
+  background-color: #00bcd4; /* Highlighted background for focused option */
+  color: #1a1a1a; /* Dark text for focused option */
+}
+
+/* Prevent wrapping for selected tags */
+div.new-game-form-page .custom-select__value-container {
+  display: flex; /* Keep tags inline */
+  white-space: nowrap; /* Prevent wrapping of tags */
+}
+
+/* Style for tags displayed in the input field */
+div.new-game-form-page .custom-select__multi-value {
+  background-color: #232733; /* Dark background for tags */
+  color: #e0e6ee; /* Light text color */
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  margin: 0.2rem; /* Add spacing between tags */
+  display: inline-flex; /* Keep tags inline */
+}
+
+div.new-game-form-page .custom-select__multi-value__label {
+  color: #e0e6ee; /* Ensure text is visible */
+}
+
+div.new-game-form-page .custom-select__multi-value__remove {
+  color: #e0e6ee; /* Light color for the remove icon */
+}
+
+div.new-game-form-page .custom-select__multi-value__remove:hover {
+  background-color: #00bcd4; /* Highlighted background for remove icon */
+  color: #1a1a1a; /* Dark text for hover state */
+}
+
+/* Target the parent of custom-select__control */
+div:has(> .custom-select__control) {
+  max-width: 735px; /* Fixed width for the parent */
+}
+
+/* Cover image preview frame */
+.cover-image-preview {
+  width: 200px;
+  height: 300px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background-color: #181b20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cover-image-preview span {
+  color: #e0e6ee; /* Text color for "Clic para añadir imagen" */
+}
+
+.cover-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image fits the frame */
+}
+
+/* Style for the "No permission" message */
+.no-permission-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #232733; /* Dark background */
+  color: #e0e6ee; /* Light text color */
+  text-align: center;
+}
+
+.no-permission-message h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.no-permission-message p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Style for the "Cargando" message */
+.loading-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #181b20; /* Slightly darker background */
+  color: #00bcd4; /* Highlighted text color */
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Style for the "Go Back" button */
+.go-back-button {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.go-back-button:hover {
+  background-color: #0056b3;
+}

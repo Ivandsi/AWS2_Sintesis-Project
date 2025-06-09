@@ -87,6 +87,17 @@ export default function UserDashboardPage() {
     navigate(`/game/${gameId}`);
   };
 
+  const goToAdminPanel = () => {
+    const { origin, port } = window.location;
+    let adminUrl;
+    if (port) {
+      adminUrl = origin.replace(`:${port}`, ":8000") + "/admin";
+      window.location.href = adminUrl;
+    } else {
+      navigate("/admin");
+    }
+  };
+
   return (
     <section className="user-dashboard-container">
       <h1 className="dashboard-welcome">¡Hola, {dashboardUser.username}!</h1>
@@ -153,10 +164,36 @@ export default function UserDashboardPage() {
         </div>
       </div>
 
+      {(dashboardUser?.is_superuser ||
+        dashboardUser?.groups?.includes("Administrador")) && (
+        <>
+          <div className="section-header">
+            <h2>Zona de administración</h2>
+          </div>
+          <div className="admin-section">
+            <button
+              className="admin-button"
+              style={{ marginRight: "1rem" }}
+              onClick={goToAdminPanel}
+            >
+              Ir al panel de administración
+            </button>
+            <button
+              className="admin-button"
+              onClick={() => navigate("/games/new")}
+            >
+              Añadir nuevo videojuego
+            </button>
+          </div>
+        </>
+      )}
+
       {/* Sección "Recientemente en tendencia" */}
       <div className="section-header">
         <h2>Juegos añadidos recientemente</h2>
-        <button className="see-more-button">Ver más</button>
+        <button className="see-more-button" onClick={() => navigate("/games")}>
+          Ver más
+        </button>
       </div>
       <div className="dashboard-game-grid">
         {trendingGames.length > 0 ? (
@@ -188,7 +225,6 @@ export default function UserDashboardPage() {
       {/* Sección "Reseñas populares" */}
       <div className="section-header">
         <h2>Reseñas populares</h2>
-        <button className="see-more-button">Ver más</button>
       </div>
       <div className="reviews-list">
         {popularReviews.length > 0 ? (

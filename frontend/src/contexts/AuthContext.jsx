@@ -32,18 +32,6 @@ export const AuthProvider = ({ children }) => {
 
       // Save the whole user object directly
       setUser(userInfo);
-
-      if (userInfo?.groups?.includes("Administrador")) {
-        let adminUrl = API_URL;
-
-        if (API_URL.includes(":8000")) {
-          adminUrl = API_URL.slice(0, -4) + "/admin";
-        } else {
-          adminUrl = API_URL.replace("/api", "/admin");
-        }
-
-        window.location.href = adminUrl;
-      }
     } catch (err) {
       console.error(
         "Error al obtener la información del usuario:",

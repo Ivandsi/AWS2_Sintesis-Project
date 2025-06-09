@@ -10,6 +10,7 @@ const Header = () => {
   const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -18,9 +19,11 @@ const Header = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (search.trim()) {
-      navigate(`/search?q=${encodeURIComponent(search.trim())}`);
-      setSearch("");
+      navigate(`/games?q=${encodeURIComponent(search.trim())}`);
+    } else {
+      navigate("/games");
     }
+    setSearch("");
   };
 
   const searchTimeout = useRef();
@@ -38,7 +41,7 @@ const Header = () => {
     searchTimeout.current = setTimeout(async () => {
       try {
         const data = await searchGames(search.trim());
-        setResults(data.slice(0, 8));
+        setResults(data.results.slice(0, 8));
         setShowDropdown(true);
       } catch {
         setResults([]);
@@ -84,9 +87,11 @@ const Header = () => {
             placeholder="Buscar videojuegos..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
           />
-          {showDropdown && results.length > 0 && (
-            <ul className="header-search-dropdown">
+          {showDropdown && isSearchFocused && results.length > 0 && (
+            <ul className="header-search-results">
               {results.map((game) => (
                 <li key={game.id}>
                   <Link
@@ -132,7 +137,8 @@ const Header = () => {
                 <span className="user-avatar">
                   <img
                     src={
-                      user.profile.profile_picture || "/static/default-avatar.png"
+                      user.profile.profile_picture ||
+                      "/static/default-avatar.png"
                     }
                     alt="Foto de perfil"
                   />

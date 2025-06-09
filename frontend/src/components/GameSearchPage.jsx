@@ -35,7 +35,7 @@ const GameSearchPage = () => {
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    let url = `/search`;
+    let url = `/games`;
     if (query && query.trim()) {
       url += `?q=${encodeURIComponent(query)}`;
     }
@@ -43,7 +43,7 @@ const GameSearchPage = () => {
       if (query && query.trim()) {
         url += `&page=${newPage}`;
       } else {
-        url = `/search?page=${newPage}`;
+        url = `/games?page=${newPage}`;
       }
     }
     navigate(url);

@@ -1,0 +1,32 @@
+/* Base styles for the toast */
+.toast {
+  padding: 20px 30px; /* Larger padding for better visibility */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  font-size: 1.2rem; /* Slightly larger font size */
+  font-weight: bold; /* Make the text stand out */
+  text-align: center; /* Center the text */
+  color: white;
+  max-width: 400px; /* Limit the width */
+  word-wrap: break-word; /* Handle long messages */
+}
+
+/* Success toast styles */
+.toast.success {
+  background-color: #22c55e; /* Green */
+}
+
+/* Error toast styles */
+.toast.error {
+  background-color: #ef4444; /* Red */
+}
+
+/* Info toast styles */
+.toast.info {
+  background-color: #3b82f6; /* Blue */
+}
+
+/* Default toast styles */
+.toast.default {
+  background-color: #6b7280; /* Gray */
+}

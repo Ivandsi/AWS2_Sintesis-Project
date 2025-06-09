@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./RegisterPage.css";
 import { AuthContext } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
 import { register } from "../services/api";
+import "./RegisterPage.css";
 
 const RegisterPage = () => {
   const { userToken } = useContext(AuthContext);
+  const { addToast } = useToast();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -29,11 +31,21 @@ const RegisterPage = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Las contraseñas no coinciden.");
+      addToast("error", "Las contraseñas no coinciden.");
       return;
     }
 
-    register(formData, navigate);
+    const res = register(formData);
+
+    res
+      .then(() => {
+        addToast("success", "Cuenta creada exitosamente. Ahora puedes iniciar sesión.");
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.error(err);
+        addToast("error", "Error al crear la cuenta. Por favor intenta de nuevo.");
+      });
   };
 
   return (

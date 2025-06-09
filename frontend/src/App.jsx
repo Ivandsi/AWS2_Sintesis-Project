@@ -9,6 +9,7 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import GameDetailPage from "./components/GameDetailPage";
 import GameSearchPage from "./components/GameSearchPage";
+import NewGameFormPage from "./components/NewGameFormPage";
 import UserListPage from "./components/UserListPage";
 import ProfilePage from "./components/ProfilePage";
 
@@ -26,7 +27,8 @@ function App() {
           {/* Ruta para la página de detalles del juego.
                 :gameId es un parámetro dinámico que capturará el ID del juego. */}
           <Route path="/game/:gameId" element={<GameDetailPage />} />
-          <Route path="/search" element={<GameSearchPage />} />
+          <Route path="/games" element={<GameSearchPage />} />
+          <Route path="/games/new" element={<NewGameFormPage />} />
           <Route path="/list/:listType" element={<UserListPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           {/* add more routes as needed */}

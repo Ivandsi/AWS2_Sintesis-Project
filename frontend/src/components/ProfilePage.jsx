@@ -1,14 +1,17 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import "./ProfilePage.css";
+import { useToast } from "../contexts/ToastContext"; // Import useToast
 import { updateProfile } from "../services/api";
+import "./ProfilePage.css";
+
 
 // You can import your custom Input component if you want to use it for all fields
 // import Input from "./Input";
 
 export default function ProfilePage() {
   const { user, userToken } = useContext(AuthContext);
+  const { addToast } = useToast(); // Use the ToastContext
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
     username: "",
@@ -97,9 +100,10 @@ export default function ProfilePage() {
         userToken
       );
       setEditing(false);
+      addToast("success", "Perfil actualizado correctamente."); // Success toast
       window.location.reload();
     } catch (err) {
-      alert("No se pudieron guardar los cambios.");
+      addToast("error", "No se pudieron guardar los cambios."); // Error toast
     }
   };
 

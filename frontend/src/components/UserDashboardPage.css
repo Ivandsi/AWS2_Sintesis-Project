@@ -68,6 +68,34 @@
   margin-top: 5px;
 }
 
+/* Additional Admin Section Styles */
+.admin-section {
+  background-color: transparent; /* Remove the distinct background */
+  text-align: center;
+  margin: 2rem 0;
+  padding: 10px 0; /* Reduced padding for a more integrated look */
+  border-radius: 10px;
+  box-shadow: none; /* Remove the inset shadow */
+  border: none;
+}
+
+/* Updated Admin Button Styles */
+.admin-button {
+  background-color: #00bcd4; /* Accent color as before */
+  color: #1a1a1a; /* Dark text for contrast */
+  padding: 15px 30px; /* Larger padding for a bigger button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1.2em; /* Increase font size */
+  margin: 0 10px;
+}
+
+.admin-button:hover {
+  background-color: #008ba3;
+}
+
 /* Section Header */
 .section-header {
   display: flex;
