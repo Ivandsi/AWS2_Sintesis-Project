@@ -106,7 +106,7 @@ const NewGameFormPage = () => {
     return <div className="loading-message">Cargando...</div>;
   }
 
-  if (!user || (!user.isSuperuser && !user.groups.includes("Administrador"))) {
+  if (!user || (!user.isSuperuser || !user.groups.includes("Administrador"))) {
     return (
       <div className="no-permission-message">
         <h2>Acceso denegado</h2>
