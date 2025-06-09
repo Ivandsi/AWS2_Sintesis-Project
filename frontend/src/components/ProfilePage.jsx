@@ -101,7 +101,6 @@ export default function ProfilePage() {
       );
       setEditing(false);
       addToast("success", "Perfil actualizado correctamente."); // Success toast
-      window.location.reload();
     } catch (err) {
       addToast("error", "No se pudieron guardar los cambios."); // Error toast
     }

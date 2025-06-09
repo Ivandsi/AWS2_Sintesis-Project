@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path
 from core import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,16 +24,11 @@ from django.conf.urls.static import static
 from core.api import api
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Django admin
-    path("api/", api.urls),  # API endpoints
-    path("media/<path:path>", views.protected_serve, {'document_root': settings.MEDIA_ROOT}),  # Media files
+    path('', views.index),
+    path('admin/', admin.site.urls),
+    path("api/", api.urls),
+    path("media/<path:path>", views.protected_serve, {'document_root': settings.MEDIA_ROOT}),
 ]
 
-# Serve React's index.html for all other routes
-urlpatterns += [
-    re_path(r'^.*$', views.index, name='index'),
-]
-
-# Serve media files in development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -26,6 +26,11 @@ const Header = () => {
     setSearch("");
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   const searchTimeout = useRef();
 
   useEffect(() => {
@@ -152,7 +157,7 @@ const Header = () => {
                   <Link to="/profile" className="user-dropdown-item">
                     Perfil
                   </Link>
-                  <button className="user-dropdown-item" onClick={logout}>
+                  <button className="user-dropdown-item" onClick={handleLogout}>
                     Cerrar sesión
                   </button>
                 </div>

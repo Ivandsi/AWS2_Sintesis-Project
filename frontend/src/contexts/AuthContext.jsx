@@ -50,7 +50,6 @@ export const AuthProvider = ({ children }) => {
 
   // Función para cerrar sesión
   const logout = () => {
-    window.location.reload();
     localStorage.removeItem("token");
     setUser(null);
     setUserToken(null);
