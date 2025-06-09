@@ -122,6 +122,7 @@ export default function ProfilePage() {
       fetchUserInfo(); // Refresh user info after saving
       addToast("success", "Perfil actualizado correctamente."); // Success toast
     } catch (err) {
+      console.error("Error updating profile:", err);
       addToast("error", "No se pudieron guardar los cambios."); // Error toast
     }
   };

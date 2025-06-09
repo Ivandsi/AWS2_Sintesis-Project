@@ -148,32 +148,39 @@ export async function getUserInfo(token) {
 }
 
 export async function updateProfile(data, token) {
-  const formData = new FormData();
-  // Append all fields from the data object
-  if (data.username) formData.append("username", data.username);
-  if (data.email) formData.append("email", data.email);
-  if (data.bio) formData.append("bio", data.bio);
-  if (data.location) formData.append("location", data.location);
-  if (data.date_of_birth) formData.append("date_of_birth", data.date_of_birth);
-  if (data.profile_picture)
-    formData.append("profile_picture", data.profile_picture);
+  try {
+    const formData = new FormData();
+    // Append all fields from the data object
+    if (data.username) formData.append("username", data.username);
+    if (data.email) formData.append("email", data.email);
+    if (data.bio) formData.append("bio", data.bio);
+    if (data.location) formData.append("location", data.location);
+    if (data.date_of_birth)
+      formData.append("date_of_birth", data.date_of_birth);
+    if (data.profile_picture)
+      formData.append("profile_picture", data.profile_picture);
 
-  const response = await fetch(`${API_URL}users/me/update`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      // Do NOT set Content-Type, browser will set it for FormData
-    },
-    body: formData,
-  });
+    const response = await fetch(`${API_URL}users/me/update`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // Do NOT set Content-Type, browser will set it for FormData
+      },
+      body: formData,
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.formErrors || "Error al actualizar el perfil");
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error details:", errorData); // Log the error response
+      throw new Error(errorData.formErrors || "Error al actualizar el perfil");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error("Error al actualizar el perfil:", err.message);
+    throw err; // Rethrow the error for further handling
   }
-
-  const result = await response.json();
-  return result;
 }
 
 export async function updateUserProfile(token, email, telefon, avatar = null) {
