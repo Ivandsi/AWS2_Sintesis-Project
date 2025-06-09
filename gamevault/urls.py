@@ -22,16 +22,19 @@ from ninja import NinjaAPI
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 from core.api import api
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("api/", api.urls),
-    path("media/<path:path>", views.protected_serve, {'document_root': settings.MEDIA_ROOT}),
+    path('admin/', admin.site.urls),  # Django admin
+    path("api/", api.urls),  # API endpoints
+    path("media/<path:path>", views.protected_serve, {'document_root': settings.MEDIA_ROOT}),  # Media files
+]
+
+# Serve React's index.html for all other routes
+urlpatterns += [
     re_path(r'^.*$', views.index, name='index'),
 ]
 
-
+# Serve media files in development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
