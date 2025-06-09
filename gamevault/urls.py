@@ -26,10 +26,10 @@ from django.conf.urls.static import static
 from core.api import api
 
 urlpatterns = [
-    re_path(r'^.*$', views.index, name='index'),
     path('admin/', admin.site.urls),
     path("api/", api.urls),
     path("media/<path:path>", views.protected_serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^.*$', views.index, name='index'),
 ]
 
 
