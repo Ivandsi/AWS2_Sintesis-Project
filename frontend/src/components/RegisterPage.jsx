@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "./ui/Button";
 import "./RegisterPage.css";
-import { AuthContext } from "../contexts/AuthContext"; // Adjust the path if needed
+import { AuthContext } from "../contexts/AuthContext";
+import { register } from "../services/api";
 
 const RegisterPage = () => {
-  const { userToken } = useContext(AuthContext); // or use `user` if available
+  const { userToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (userToken) {
-      navigate("/"); // Redirect if already logged in
+      navigate("/");
     }
   }, [userToken, navigate]);
 
@@ -27,15 +27,66 @@ const RegisterPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Registration logic here
-    alert("Registro enviado");
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Las contraseñas no coinciden.");
+      return;
+    }
+
+    register(formData, navigate);
   };
 
   return (
     <main className="register-page">
       <h1>Crear una cuenta</h1>
       <form onSubmit={handleSubmit} className="register-form">
-        {/* form inputs here as before */}
+        <label>
+          Nombre de usuario
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Correo electrónico
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Contraseña
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <label>
+          Confirmar contraseña
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <button type="submit" className="btn btn-default">
+          Registrarse
+        </button>
       </form>
 
       <p className="register-login-link">

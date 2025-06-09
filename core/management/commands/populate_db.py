@@ -111,7 +111,6 @@ class Command(BaseCommand):
             "Jugando",
             "Terminado",
             "En espera",
-            "Abandonado",
             "Planificado para jugar"
         ]
         

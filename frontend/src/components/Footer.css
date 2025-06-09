@@ -1,0 +1,14 @@
+/* Footer.css */
+.site-footer {
+  background-color: #18181b; /* Match header background */
+  color: #e0e0e0;
+  text-align: center;
+  padding: 18px 32px; /* Match header padding */
+  border-top: 1px solid #333;
+  font-size: 1.1em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.15); /* Optional: subtle shadow like header */
+  z-index: 100;
+  width: 100%;
+}

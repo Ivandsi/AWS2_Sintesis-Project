@@ -1,158 +1,324 @@
-
-/* Always dark style applied directly */
+/* Header container */
 .header {
-  position: relative;
   width: 100%;
   background-color: #141414;
   border-bottom: 1px solid #3c3c50;
-  z-index: 50;
   color: white;
-  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  z-index: 50;
 }
 
+/* Navigation bar */
 .nav {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 1.25rem 1.25rem;
-  position: relative;
+  padding: 1.25rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.logo {
+.nav-spacer {
+  flex: 1 1 auto;
+}
+
+/* Logo and text container */
+.log-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Logo image */
+.header-logo-img {
+  height: 2.8rem;
+  width: 2.8rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px #0005;
+  background: #222;
   display: block;
 }
 
-.user-controls {
-  min-width: 100px;
+/* Logo text link */
+.header-text {
+  text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 }
 
+.header-text-content {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 1px;
+  margin: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.header-text:hover .header-text-content,
+.header-text:focus .header-text-content {
+  color: #00bcd4; /* Cyan for hover */
+}
+
+/* Nav links (right side) */
+.nav-links {
+  display: flex;
+  align-items: center;
+  margin-left: 1.5rem;
+}
+
+.header-link {
+  color: #27c6ff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-right: 1.5rem;
+  transition: color 0.18s;
+}
+
+.header-link:hover {
+  color: #fff;
+}
+
+/* User controls (right side) */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Greeting text */
 .greeting {
   color: white;
   font-weight: 500;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin: 0 0.5rem 0 0;
 }
 
-.dark-mode-switch {
-  cursor: pointer;
-  font-weight: 500;
-  color: #e5e7eb; /* light gray */
-  border-radius: 9999px; /* fully rounded */
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  background-color: transparent;
-  border: none;
-  transition: background-color 0.2s ease;
-  outline: none;
-}
-
-.dark-mode-switch:hover {
-  background-color: #374151; /* darker gray */
-}
-
-.icon-wrapper {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem; /* 36px */
-  height: 2.25rem;
-}
-
-.icon {
-  width: 1rem; /* 16px */
-  height: 1rem;
-}
-
-/* Button styles */
-.btn {
+/* Header-specific button/link styles */
+.header-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
   border-radius: 0.5rem;
+  min-width: 140px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  border: 1.5px solid transparent;
+  box-sizing: border-box;
   cursor: pointer;
-  outline: none;
-  position: relative;
   user-select: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.header-btn-default {
+  background-color: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
 }
 
-/* Default button */
-.btn-default {
-  background-color: #2563eb; /* blue-600 */
-  color: white;
-  border: none;
+.header-btn-default:hover,
+.header-btn-default:focus {
+  background-color: #1e40af;
+  border-color: #1e40af;
+  color: #fff;
 }
 
-.btn-default:hover:not(:disabled),
-.btn-default:focus:not(:disabled) {
-  background-color: #1e40af; /* blue-700 */
-  outline: none;
-}
-
-/* Outline button */
-.btn-outline {
+.header-btn-outline {
   background-color: #282828;
-  color: white;
-  border: 1px solid #3c3c3c;
-  box-shadow: none;
+  color: #fff;
+  border: 1.5px solid #3c3c3c;
 }
 
-.btn-outline:hover:not(:disabled) {
+.header-btn-outline:hover,
+.header-btn-outline:focus {
   background-color: #3c3c3c;
+  border-color: #00bcd4;
+  color: #fff;
 }
 
-.btn-outline:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Spinner container */
-.spinner-wrapper {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
+.header-search-form {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  margin: 0 1.5rem;
+  flex: 1 1 300px;
+  max-width: 350px;
 }
 
-/* Spinner */
-.spinner {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid #3b82f6; /* blue-500 */
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.header-search-input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+  border: 1.5px solid #3c3c3c;
+  background: #222;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.header-search-input:focus {
+  border-color: #2563eb;
+}
+
+.header-search-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: #2563eb;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.header-search-btn:hover,
+.header-search-btn:focus {
+  background: #1e40af;
+}
+
+.header-search-dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: #23232b;
+  border: 1px solid #333;
+  border-radius: 0 0 0.5rem 0.5rem;
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 16px #000a;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.header-search-dropdown li {
+  border-bottom: 1px solid #333;
+}
+
+.header-search-dropdown li:last-child {
+  border-bottom: none;
+}
+
+.header-search-dropdown a {
+  display: block;
+  padding: 0.7rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.header-search-dropdown a:hover,
+.header-search-dropdown a:focus {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* Add to Header.css */
+.user-dropdown-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-dropdown-trigger {
+  background: none;
+  border: none;
+  color: #e0e6ee;
+  font: inherit;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.5rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 7px;
+  transition: background 0.15s;
+}
+
+.user-dropdown-trigger:hover,
+.user-dropdown-trigger:focus {
+  background: #232733;
+}
+
+.user-avatar img {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 0.6rem;
+  border: 3px solid #27c6ff;
+  background: #232733;
+  box-shadow: 0 0 0 3px #181b20, 0 2px 8px rgba(39, 198, 255, 0.18);
+  transition: box-shadow 0.18s, border 0.18s;
+}
+
+.user-dropdown-trigger:hover .user-avatar img {
+  box-shadow: 0 0 0 4px #27c6ff, 0 2px 12px rgba(39, 198, 255, 0.25);
+  border-color: #00bcd4;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #e0e6ee;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: #232733;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  min-width: 150px;
+  z-index: 100;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-dropdown-item {
+  color: #e0e6ee;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.user-dropdown-item:hover {
+  background: #27c6ff;
+  color: #181b20;
 }
 
 /* Responsive for medium screens */
-@media (min-width: 768px) {
-  .header {
-    justify-content: flex-start;
-    flex-wrap: nowrap;
+@media (max-width: 700px) {
+  .nav {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .log-container {
+    justify-content: center;
+    width: 100%;
+  }
+  .header-text-content {
+    font-size: 1.4rem;
+  }
+  .header-logo-img {
+    height: 2rem;
+    width: 2rem;
+  }
+  .header-btn {
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
   }
 }

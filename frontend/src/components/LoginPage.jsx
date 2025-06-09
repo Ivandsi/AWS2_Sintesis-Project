@@ -41,44 +41,46 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="login-container">
-      <h1>Iniciar sesión</h1>
-      <p>Accede para gestionar tus listas y buscar videojuegos.</p>
+    <main className="login-main">
+        <div className="login-container">
+          <h1>Iniciar sesión</h1>
+          <p>Accede para gestionar tus listas y buscar videojuegos.</p>
 
-      <form className="login-form" onSubmit={handleSubmit}>
-        <label htmlFor="email">Correo electrónico:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+          <form className="login-form" onSubmit={handleSubmit}>
+            <label htmlFor="email">Correo electrónico:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
 
-        <label htmlFor="password">Contraseña:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+            <label htmlFor="password">Contraseña:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
 
-        <button type="submit" className="btn btn-default">
-          Entrar
-        </button>
-      </form>
+            <button type="submit" className="btn btn-default">
+              Entrar
+            </button>
+          </form>
 
-      {error && <p className="error-message">{error}</p>}
+          {error && <p className="error-message">{error}</p>}
 
-      <p className="register-prompt">
-        ¿No tienes una cuenta?{" "}
-        <Link to="/register" className="register-link">
-          Regístrate aquí
-        </Link>
-      </p>
+          <p className="register-prompt">
+            ¿No tienes una cuenta?{" "}
+            <Link to="/register" className="register-link">
+              Regístrate aquí
+            </Link>
+          </p>
+        </div>
     </main>
   );
 };

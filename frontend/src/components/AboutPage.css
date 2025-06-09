@@ -1,24 +1,33 @@
 .aboutpage-container {
-  padding: 2rem;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  color: #e0e6ee;
+  background: transparent;
 }
 
 .aboutpage-title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: var(--text-primary, #111);
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.5px;
 }
 
 .aboutpage-description {
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  color: var(--text-secondary, #333);
+  font-size: 1.18rem;
+  color: #b0b8c1;
+  margin-bottom: 1.2rem;
+  line-height: 1.7;
 }
 
-.aboutpage-mission {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: var(--text-muted, #555);
+.aboutpage-detail {
+  font-size: 1.13rem;
+  color: #e0e6ee;
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  background: #232733;
+  border-radius: 10px;
+  padding: 1.2rem 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
 }

@@ -107,8 +107,15 @@ class Achievement(models.Model):
 
     
 class GameList(models.Model):
+    LIST_NAME_CHOICES = [
+        ("Jugando", "Jugando"),
+        ("Terminado", "Terminado"),
+        ("En espera", "En espera"),
+        ("Planificado para jugar", "Planificado para jugar"),
+    ]
+    
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default=1, verbose_name="Propietario") 
-    name = models.CharField(max_length=255, default='Unnamed List', verbose_name="Nombre")
+    name = models.CharField(max_length=32, choices=LIST_NAME_CHOICES, verbose_name="Nombre")
     description = models.TextField(null=True, blank=True, verbose_name="Descripción")
     is_public = models.BooleanField(default=False, verbose_name="Es público")
     games = models.ManyToManyField(Game, verbose_name="Juegos")
@@ -151,3 +158,20 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = "Perfil de usuario"
         verbose_name_plural = "Perfiles de usuario"
+        
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario")
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, verbose_name="Juego")
+    rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)], verbose_name="Calificación") # 1 to 5 stars
+    review_text = models.TextField(blank=True, null=True, verbose_name="Texto de la reseña")
+    completed_on = models.DateField(null=True, blank=True, verbose_name="Completado el")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Fecha de actualización")
+
+    def __str__(self):
+        return f"Reseña de {self.user.username} para {self.game.title}"
+
+    class Meta:
+        verbose_name = "Reseña"
+        verbose_name_plural = "Reseñas"
+        unique_together = ('user', 'game')
