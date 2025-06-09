@@ -37,7 +37,7 @@ export default function UserListPage() {
     const updated = games.filter((g) => g.id !== gameId);
     setGames(updated);
     if (updated.length === 0) {
-      navigate("/dashboard"); // Go back if list is empty
+      navigate("/"); // Go back if list is empty
     }
   };
 
