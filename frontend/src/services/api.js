@@ -2,12 +2,12 @@ import { LIST_TYPE_NAMES } from "./constants";
 
 const API_ROOT_LOCAL = "http://localhost:8000/api/";
 const API_ROOT_PRODUCTION = "https://gamevault.ieti.site/api/";
-export const API_URL = API_ROOT_LOCAL;
+export const API_URL = API_ROOT_PRODUCTION;
 
 const LOGIN_URL_LOCAL = "http://localhost:8000";
 const LOGIN_URL_PRODUCTION = "https://gamevault.ieti.site/";
 
-export const LOGIN_URL = API_ROOT_LOCAL;
+export const LOGIN_URL = LOGIN_URL_PRODUCTION;
 
 export const getBooks = () => {
   return fetch(API_URL + "llibres")
@@ -60,7 +60,7 @@ export const getItemById = async (id, itemType) => {
   }
 };
 
-export async function register(formData, navigate) {
+export async function register(formData) {
   try {
     const response = await fetch(API_URL + "register/", {
       method: "POST",
