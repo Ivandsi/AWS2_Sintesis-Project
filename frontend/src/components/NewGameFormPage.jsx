@@ -33,16 +33,6 @@ const NewGameFormPage = () => {
     franchises: [],
   });
 
-  // Timeout to handle user loading failure
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!user) {
-        setLoading(false); // Stop loading
-      }
-    }, 5000); // 5-second timeout
-
-    return () => clearTimeout(timeout); // Cleanup timeout on unmount
-  }, [user]);
 
   // Fetch options and set loading to false only after both user and options are loaded
   useEffect(() => {
