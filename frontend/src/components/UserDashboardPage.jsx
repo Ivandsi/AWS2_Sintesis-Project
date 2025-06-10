@@ -97,10 +97,10 @@ export default function UserDashboardPage() {
     let adminUrl;
     if (port) {
       adminUrl = origin.replace(`:${port}`, ":8000") + "/admin";
-      window.location.href = adminUrl;
     } else {
-      navigate("/admin");
+      adminUrl = origin + "/admin";
     }
+    window.location.href = adminUrl;
   };
 
   return (
